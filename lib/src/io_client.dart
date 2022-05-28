@@ -12,18 +12,18 @@ import 'io_streamed_response.dart';
 /// Create an [IOClient].
 ///
 /// Used from conditional imports, matches the definition in `client_stub.dart`.
-BaseClient createClient([String? proxyString]) => IOClient(null, proxyString);
+BaseClient createClient([String? proxyString, String? userAgent]) =>
+    IOClient(null, proxyString, userAgent);
 
 /// A `dart:io`-based HTTP client.
 class IOClient extends BaseClient {
   /// The underlying `dart:io` HTTP client.
   HttpClient? _inner;
-  String? proxyString;
 
-  IOClient([HttpClient? inner, String? proxyString]) {
+  IOClient([HttpClient? inner, String? proxyString, String? userAgent]) {
     _inner = inner ?? HttpClient();
+    _inner?.userAgent = userAgent;
     if (proxyString != null) {
-      print('HTTP: Got proxy string: $proxyString');
       _inner!.badCertificateCallback = (cert, host, port) {
         print("Bad cert");
         return true;
