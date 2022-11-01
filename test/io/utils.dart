@@ -6,8 +6,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:http/http.dart';
-import 'package:http/src/utils.dart';
+import 'package:http_custom/http.dart';
+import 'package:http_custom/src/utils.dart';
 import 'package:test/test.dart';
 
 export '../utils.dart';
@@ -37,8 +37,7 @@ Future<void> startServer() async {
         var n = int.parse(request.uri.query);
         response
           ..statusCode = 302
-          ..headers
-              .set('location', serverUrl.resolve('/loop?${n + 1}').toString())
+          ..headers.set('location', serverUrl.resolve('/loop?${n + 1}').toString())
           ..contentLength = 0;
         unawaited(response.close());
         return;
@@ -64,20 +63,16 @@ Future<void> startServer() async {
 
       var requestBodyBytes = await ByteStream(request).toBytes();
       var encodingName = request.uri.queryParameters['response-encoding'];
-      var outputEncoding = encodingName == null
-          ? ascii
-          : requiredEncodingForCharset(encodingName);
+      var outputEncoding = encodingName == null ? ascii : requiredEncodingForCharset(encodingName);
 
-      response.headers.contentType =
-          ContentType('application', 'json', charset: outputEncoding.name);
+      response.headers.contentType = ContentType('application', 'json', charset: outputEncoding.name);
       response.headers.set('single', 'value');
 
       dynamic requestBody;
       if (requestBodyBytes.isEmpty) {
         requestBody = null;
       } else if (request.headers.contentType?.charset != null) {
-        var encoding =
-            requiredEncodingForCharset(request.headers.contentType!.charset!);
+        var encoding = requiredEncodingForCharset(request.headers.contentType!.charset!);
         requestBody = encoding.decode(requestBodyBytes);
       } else {
         requestBody = requestBodyBytes;
@@ -117,9 +112,7 @@ void stopServer() {
 }
 
 /// A matcher for functions that throw HttpException.
-Matcher get throwsClientException =>
-    throwsA(const TypeMatcher<ClientException>());
+Matcher get throwsClientException => throwsA(const TypeMatcher<ClientException>());
 
 /// A matcher for functions that throw SocketException.
-final Matcher throwsSocketException =
-    throwsA(const TypeMatcher<SocketException>());
+final Matcher throwsSocketException = throwsA(const TypeMatcher<SocketException>());

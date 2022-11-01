@@ -6,7 +6,7 @@
 
 import 'dart:io';
 
-import 'package:http/http.dart' as http;
+import 'package:http_custom/http.dart' as http;
 import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
 

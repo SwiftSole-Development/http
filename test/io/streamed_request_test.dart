@@ -6,7 +6,7 @@
 
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
+import 'package:http_custom/http.dart' as http;
 import 'package:test/test.dart';
 
 import 'utils.dart';
@@ -24,10 +24,7 @@ void main() {
         ..sink.close();
 
       var response = await request.send();
-      expect(
-          await utf8.decodeStream(response.stream),
-          parse(
-              containsPair('headers', containsPair('content-length', ['10']))));
+      expect(await utf8.decodeStream(response.stream), parse(containsPair('headers', containsPair('content-length', ['10']))));
     });
 
     test('defaults to sending no Content-Length', () async {
@@ -36,15 +33,13 @@ void main() {
       request.sink.close();
 
       var response = await request.send();
-      expect(await utf8.decodeStream(response.stream),
-          parse(containsPair('headers', isNot(contains('content-length')))));
+      expect(await utf8.decodeStream(response.stream), parse(containsPair('headers', isNot(contains('content-length')))));
     });
   });
 
   // Regression test.
   test('.send() with a response with no content length', () async {
-    var request =
-        http.StreamedRequest('GET', serverUrl.resolve('/no-content-length'));
+    var request = http.StreamedRequest('GET', serverUrl.resolve('/no-content-length'));
     request.sink.close();
     var response = await request.send();
     expect(await utf8.decodeStream(response.stream), equals('body'));

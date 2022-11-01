@@ -3,8 +3,8 @@
 // BSD-style license that can be found in the LICENSE file.
 
 @TestOn('browser')
-import 'package:http/browser_client.dart';
-import 'package:http/http.dart' as http;
+import 'package:http_custom/browser_client.dart';
+import 'package:http_custom/http.dart' as http;
 import 'package:test/test.dart';
 
 import 'utils.dart';
@@ -31,8 +31,7 @@ void main() {
     var url = Uri.parse('http://http.invalid');
     var request = http.StreamedRequest('POST', url);
 
-    expect(
-        client.send(request), throwsClientException('XMLHttpRequest error.'));
+    expect(client.send(request), throwsClientException('XMLHttpRequest error.'));
 
     request.sink.add('{"hello": "world"}'.codeUnits);
     request.sink.close();

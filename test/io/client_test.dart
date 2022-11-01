@@ -6,8 +6,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:http/http.dart' as http;
-import 'package:http/io_client.dart' as http_io;
+import 'package:http_custom/http.dart' as http;
+import 'package:http_custom/io_client.dart' as http_io;
 import 'package:test/test.dart';
 
 import 'utils.dart';
@@ -20,8 +20,7 @@ void main() {
   test('#send a StreamedRequest', () async {
     var client = http.Client();
     var request = http.StreamedRequest('POST', serverUrl)
-      ..headers[HttpHeaders.contentTypeHeader] =
-          'application/json; charset=utf-8'
+      ..headers[HttpHeaders.contentTypeHeader] = 'application/json; charset=utf-8'
       ..headers[HttpHeaders.userAgentHeader] = 'Dart';
 
     var responseFuture = client.send(request);
@@ -59,8 +58,7 @@ void main() {
     var ioClient = HttpClient();
     var client = http_io.IOClient(ioClient);
     var request = http.StreamedRequest('POST', serverUrl)
-      ..headers[HttpHeaders.contentTypeHeader] =
-          'application/json; charset=utf-8'
+      ..headers[HttpHeaders.contentTypeHeader] = 'application/json; charset=utf-8'
       ..headers[HttpHeaders.userAgentHeader] = 'Dart';
 
     var responseFuture = client.send(request);
@@ -98,8 +96,7 @@ void main() {
     var client = http.Client();
     var url = Uri.parse('http://http.invalid');
     var request = http.StreamedRequest('POST', url);
-    request.headers[HttpHeaders.contentTypeHeader] =
-        'application/json; charset=utf-8';
+    request.headers[HttpHeaders.contentTypeHeader] = 'application/json; charset=utf-8';
 
     expect(client.send(request), throwsSocketException);
 
@@ -116,8 +113,7 @@ void main() {
     var bytesString = await response.stream.bytesToString();
     client.close();
 
-    var headers = (jsonDecode(bytesString) as Map<String, dynamic>)['headers']
-        as Map<String, dynamic>;
+    var headers = (jsonDecode(bytesString) as Map<String, dynamic>)['headers'] as Map<String, dynamic>;
     var contentType = (headers['content-type'] as List).single;
     expect(contentType, startsWith('multipart/form-data; boundary='));
   });
